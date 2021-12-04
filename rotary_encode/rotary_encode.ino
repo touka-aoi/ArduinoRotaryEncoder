@@ -13,6 +13,7 @@ void setup() {
 
 void loop() {
   Serial.println(encoder_cnt); //カウントをシリアルで送る
+  encoder_cnt %= 600;
   delay(10);
 }
 
