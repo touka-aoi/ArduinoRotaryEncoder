@@ -3,6 +3,7 @@
 char encoder_a = 2; //エンコーダのA相
 char encoder_b = 3; //エンコーダのB相
 int encoder_cnt = 0; //カウントアップ用変数
+int before_cnt = 0; //以前のカウンタ
 
 void setup() {
   pinMode(encoder_a, INPUT_PULLUP); //A相用入力、プルアップに設定
@@ -12,7 +13,8 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(encoder_cnt); //カウントをシリアルで送る
+  Serial.println(enocer_judge(encoder_cnt)); //カウントをシリアルで送る
+  encoder_cnt %= 600; //600pのため600で切り捨て
   delay(10);
 }
 
@@ -25,4 +27,15 @@ void encoder_pulse() {
   else if (digitalRead(encoder_b) == 1) {
     encoder_cnt++;
   }
+}
+
+//増加か減少かを測る関数
+int enocer_judge(int now_cnt) {
+  if (before_cnt < now_cnt) {
+    return 1;
+  }
+  else {
+    return -1;
+  }
+  before_cnt = now_cnt;
 }
